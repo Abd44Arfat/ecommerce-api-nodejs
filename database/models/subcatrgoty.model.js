@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose"; // Import Types from mongoose
 
 const schema = new mongoose.Schema({
     name: {
@@ -12,19 +12,15 @@ const schema = new mongoose.Schema({
         type: String,
         lowercase: true,
         required: true,
-
-
     },
-   Category:{
-type:Types.ObjectId,
-ref:"Category"
+    Category: {
+        type: Types.ObjectId, // Use Types.ObjectId for reference
+        ref: "Category"
+    },
+    createdBy: {
+        type: Types.ObjectId, // Use Types.ObjectId for reference
+        ref: "User", // Ensure ref is a string for the model name
+    },
+}, { timestamps: true, versionKey: false }); // Fixed typo: 'timesstamps' to 'timestamps'
 
-   },
-   createdBy: {
-     type:  Types.ObjectId,
-   
-   ref:User,
-   },
-}, { timesstamps: true, versionKey: false });
 export const SubCategory = mongoose.model('SubCategory', schema);
-

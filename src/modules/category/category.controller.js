@@ -51,7 +51,6 @@ const allCategories =catchError(async (req,res,next)=>{
 
 export {
 
-
     addCategory,
     allCategories,
     getCategory,
