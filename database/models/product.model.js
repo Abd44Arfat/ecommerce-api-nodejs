@@ -1,6 +1,6 @@
 import mongoose, { Types } from "mongoose";
-import { Category } from "./category.model";
-import { Brand } from "./brand.model";
+import { Category } from "./category.model.js";
+import { Brand } from "./brand.model.js";
 
 const schema = new mongoose.Schema({
     name: {
@@ -26,11 +26,9 @@ const schema = new mongoose.Schema({
     imgCover: String,
     images: [String],
     price: {
-
         type: Number,
         required: true,
         min: 0,
-
     },
     priceAfterDiscount: {
 
@@ -41,7 +39,7 @@ const schema = new mongoose.Schema({
     },
     sold: Number,
     stock: {
-        Number,
+      type:  Number,
         min: 0,
     },
     Category: {
@@ -72,9 +70,17 @@ const schema = new mongoose.Schema({
   createdBy: {
     type:  Types.ObjectId,
   
-  ref:User,
+  ref:"User",
   },
     
 }, { timesstamps: true, versionKey: false });
+
+
+schema.post('init',function(doc){
+    doc.imgCover="http://localhost:3000/uploads/products/" + doc.imgCover
+
+    doc.images=doc.images.map(img=>"http://localhost:3000/uploads/products/" + img)
+    
+    })
 export const Product = mongoose.model('Product', schema);
 

@@ -15,11 +15,21 @@ const schema = new mongoose.Schema({
 
 
     },
-    image: String,
+    image: {type:String,
+
+required: true
+
+    },
     createdBy: {
         type:Types.ObjectId,
         ref: "User",
     },
 }, { timesstamps: true, versionKey: false });
+
+schema.post('init',function(doc){
+doc.image="http://localhost:3000/uploads/categories/" + doc.image
+
+})
+
 export const Category = mongoose.model('Category', schema);
 
