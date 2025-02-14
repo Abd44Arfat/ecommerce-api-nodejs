@@ -1,8 +1,9 @@
 import slugify from "slugify";
 import { AppError } from "../../utils/appError.js";
 import { catchError } from "../../middleware/catchError.js";
-import {Product}from "../../../database/models/product.model.js"
+import { Product } from "../../../database/models/product.model.js"
 import { deleteOne } from "../handlers/handelrs.js";
+import { ApiFeature } from "../../utils/apiFeature.js";
 
 const addProduct = catchError(async (req, res, next) => {
     req.body.slug = slugify(req.body.name);
@@ -17,32 +18,10 @@ const addProduct = catchError(async (req, res, next) => {
 
 
 const allProducts = catchError(async (req, res, next) => {
-let pageNumber=req.query.page * 1 || 1
-if(req.query.pageNumber<1) pageNumber=1
-let limit=2
-let skip=(pageNumber-1)*limit
-let filterObj=structuredClone(req.query)
-filterObj=JSON.stringify(filterObj)
-filterObj=filterObj.replace(/\b(gte|gt|lte|lt)\b/g,match=>`$${match}`)
-filterObj=JSON.parse(filterObj)
+let apiFeatures=new ApiFeature(Product.find(),req.query).pagination().fields().filter().sort().search()
 
-let excludedFields=['page','sort','search','fields']
-excludedFields.forEach(el=>delete filterObj[el])
-
-
-
-console.log(filterObj)
- let mongooseQuery =  Product.find(filterObj).skip(skip).limit(limit);
-
-if(req.query.sort){
-let sortedBy=req.query.sort.split(',').join(' ')
-mongooseQuery=mongooseQuery.sort(sortedBy)
-
-
-}
-
-    let products= await mongooseQuery
-    res.json({ message: "success",pageNumber, products });
+    let products = await apiFeatures.mongooseQuery
+    res.json({ message: "success",page:apiFeatures.pageNumber, products });
 });
 
 const getProduct = catchError(async (req, res, next) => {
@@ -69,5 +48,5 @@ export {
     getProduct,
     updateProduct,
     deleteProduct,
- 
+
 };

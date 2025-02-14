@@ -77,9 +77,9 @@ const schema = new mongoose.Schema({
 
 
 schema.post('init',function(doc){
-    doc.imgCover="http://localhost:3000/uploads/products/" + doc.imgCover
+  if(doc.imgCover)  doc.imgCover="http://localhost:3000/uploads/products/" + doc.imgCover
 
-    doc.images=doc.images.map(img=>"http://localhost:3000/uploads/products/" + img)
+   if(doc.images) doc.images =doc.images.map(img=>"http://localhost:3000/uploads/products/" + img)
     
     })
 export const Product = mongoose.model('Product', schema);
