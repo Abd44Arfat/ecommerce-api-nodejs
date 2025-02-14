@@ -21,15 +21,33 @@ let pageNumber=req.query.page * 1 || 1
 if(req.query.pageNumber<1) pageNumber=1
 let limit=2
 let skip=(pageNumber-1)*limit
+let filterObj=structuredClone(req.query)
+filterObj=JSON.stringify(filterObj)
+filterObj=filterObj.replace(/\b(gte|gt|lte|lt)\b/g,match=>`$${match}`)
+filterObj=JSON.parse(filterObj)
+
+let excludedFields=['page','sort','search','fields']
+excludedFields.forEach(el=>delete filterObj[el])
 
 
-    let product = await Product.find().skip(skip).limit(limit);
-    res.json({ message: "success",pageNumber, product });
+
+console.log(filterObj)
+ let mongooseQuery =  Product.find(filterObj).skip(skip).limit(limit);
+
+if(req.query.sort){
+let sortedBy=req.query.sort.split(',').join(' ')
+mongooseQuery=mongooseQuery.sort(sortedBy)
+
+
+}
+
+    let products= await mongooseQuery
+    res.json({ message: "success",pageNumber, products });
 });
 
 const getProduct = catchError(async (req, res, next) => {
     let product = await Product.findById(req.params.id);
-    product || next(new AppError("category not found", 404));
+    product || next(new AppError("Product not found", 404));
     !product || res.json({ message: "success", product });
 });
 
