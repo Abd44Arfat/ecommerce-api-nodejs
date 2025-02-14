@@ -38,7 +38,7 @@ const changeUserPassword = catchError(async (req, res, next) => {
     await User.findOneAndUpdate({ email: req.body.email }, { password: req.body.newPassword,passwordChangedAt:Date.now()  });
     let token = jwt.sign(
       { email: user.email, name: user.name, id: user._id, role: user.role },
-      "JR"
+      "JR" 
     );
     return res.status(201).json({ message: "success", token });
   }
