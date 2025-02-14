@@ -46,13 +46,31 @@ const changeUserPassword = catchError(async (req, res, next) => {
 });
 
 
-const protectedRooutes = catchError(async (req, res, next) => {
-// check token exist or not 
-//verify token 
+const protectedRoutes = catchError(async (req, res, next) => {
+  let { token } = req.headers;
+  let userPayload = null;
 
-//check user Id from token 
-//token propper to change password
+  if (!token) return next(new AppError("Token not found", 401));
 
+  try {
+    userPayload = jwt.verify(token, "JR");
+  } catch (err) {
+    return next(new AppError(err.message, 401));
+  }
+
+  let user = await User.findById(userPayload.id); // Use 'id' instead of 'userId'
+
+  if (!user) return next(new AppError("User not found", 401));
+
+
+  console.log('Token created at:', userPayload.iat);
+  console.log('Password changed at:', user.passwordChangedAt);
+if(user.passwordChangedAt){
+  let time = parseInt(user.passwordChangedAt.getTime() / 1000);
+  if (time > userPayload.iat) return next(new AppError('Invalid token... login again', 401));
+}
+  req.user = user;
+  next();
 });
 
-export { signUp, signIn, changeUserPassword };
+export { signUp, signIn, changeUserPassword,protectedRoutes };
