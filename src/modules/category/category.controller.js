@@ -3,6 +3,7 @@ import { AppError } from "../../utils/appError.js"
 import { catchError } from "../../middleware/catchError.js"
 import slugify from "slugify";
 import { deleteOne } from "../handlers/handelrs.js";
+import { ApiFeature } from "../../utils/apiFeature.js";
 
 
 const addCategory = catchError(async (req, res, next) => {
@@ -18,9 +19,13 @@ const addCategory = catchError(async (req, res, next) => {
 
 
 const allCategories =catchError(async (req,res,next)=>{
-    let categories=await Category.find()
+
+let apiFeatures=new ApiFeature(Category.find(),req.query).pagination().fields().filter().sort().search()
+
+
+    let categories=await apiFeatures.mongooseQuery
     
-    res.json({message:"success",categories })
+    res.json({message:"success", page: apiFeatures.pageNumber, categories })
     
     })
 

@@ -13,13 +13,13 @@ enum:['admin', 'user'],
 default: 'user'
 
 },
-    slug: {
-        type: String,
-        lowercase: true,
-        required: true,
+    // slug: {
+    //     type: String,
+    //     lowercase: true,
+    //     required: true,
 
 
-    },
+    // },
 logo:String
 }, { timesstamps: true, versionKey: false });
 export const User = mongoose.model('User', schema);
