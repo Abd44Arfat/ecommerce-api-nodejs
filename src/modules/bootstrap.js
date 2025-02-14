@@ -1,6 +1,6 @@
 
 import subcategoryRouter from "./subcategory/subcategory.routes.js"
-import categoryRouter from "./subcategory/subcategory.routes.js"
+import categoryRouter from "./category/category.routes.js"
 import brandRouter from "./brand/brand.routes.js"
 import productRouter from "./product/product.routes.js"
 export const bootstrap=(app)=>{

@@ -2,10 +2,15 @@
 import { Router } from "express";
 import { addCategory, allCategories, deleteCategory, getCategory, updateCategory } from "./category.controller.js";
 import { uploadSinleFile } from "../../fileUpload/fileUpload.js";
+import { Validate } from "../../middleware/validate.js";
+import { addCategoryValidation } from "./category.validation.js";
+import subcategoryRouter from "../subcategory/subcategory.routes.js";
 
 const categoryRouter=Router()
+
+categoryRouter.use("/:category/subcategories",subcategoryRouter)
 categoryRouter.route('/')
-.post(uploadSinleFile('image','categories'),addCategory)
+.post(uploadSinleFile('image','categories'),Validate(addCategoryValidation),addCategory)
 .get(allCategories)
 categoryRouter.route('/:id')
 .get(getCategory)

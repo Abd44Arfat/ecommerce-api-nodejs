@@ -2,7 +2,7 @@ import { AppError } from "../utils/appError.js"
 
 export const Validate=(schema)=>{
 return(req,res,next)=>{
-let {error}= schema.validate({...req.body, ...req.params, ...req.query} , {abortEarly:true})
+let {error}= schema.validate({image :req.file ,...req.body, ...req.params, ...req.query} , {abortEarly:true})
 if(!error){
     next()
 }else{

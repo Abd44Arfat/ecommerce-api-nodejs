@@ -2,7 +2,7 @@ import slugify from "slugify";
 import { AppError } from "../../utils/appError.js";
 import { catchError } from "../../middleware/catchError.js";
 import{Brand} from "../../../database/models/brand.model.js"
-
+import { deleteOne } from "../handlers/handelrs.js";
 const addBrand = catchError(async (req, res, next) => {
     req.body.slug = slugify(req.body.name);
     req.body.logo = req.file.filename;
@@ -32,11 +32,7 @@ const updateBrand = catchError(async (req, res, next) => {
     !brand || res.json({ message: "success", brand });
 });
 
-const deleteBrand = catchError(async (req, res, next) => {
-    let brand = await Brand.findByIdAndDelete(req.params.id);
-    brand || next(new AppError("category not found", 404));
-    !brand || res.json({ message: "success", brand });
-});
+const deleteBrand = deleteOne(Brand)
 
 
 export {

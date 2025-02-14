@@ -13,9 +13,9 @@ const schema = new mongoose.Schema({
         lowercase: true,
         required: true,
     },
-    Category: {
+    category: {
         type: Types.ObjectId, // Use Types.ObjectId for reference
-        ref: "Category"
+        ref: 'Category'
     },
     createdBy: {
         type: Types.ObjectId, // Use Types.ObjectId for reference
