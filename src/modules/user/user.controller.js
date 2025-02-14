@@ -2,8 +2,8 @@ import { AppError } from "../../utils/appError.js";
 import { catchError } from "../../middleware/catchError.js";
 import { deleteOne } from "../handlers/handelrs.js";
 import { User } from "../../../database/models/user.model.js";
-const addUser = catchError(async (req, res, next) => {
 
+const addUser = catchError(async (req, res, next) => {
     let user = new User(req.body);
     await user.save();
     res.json({ message: "success", user });
