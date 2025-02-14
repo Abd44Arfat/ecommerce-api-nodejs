@@ -14,6 +14,8 @@ enum:['admin', 'user'],
 default: 'user'
 
 },
+passwordChangedAt: Date,
+
     // slug: {
     //     type: String,
     //     lowercase: true,
