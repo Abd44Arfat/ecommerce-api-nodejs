@@ -24,7 +24,7 @@ const signIn = catchError(async (req, res, next) => {
       { email: user.email, name: user.name, id: user._id, role: user.role },
       "JR"
     );
-    return res.status(201).json({ message: "success", token });
+    return res.status(201).json({ message: "success", user, token });
   }
 
 
@@ -73,4 +73,19 @@ if(user.passwordChangedAt){
   next();
 });
 
-export { signUp, signIn, changeUserPassword,protectedRoutes };
+const allowedTo = (...roles)=>{
+
+ return catchError(async (req, res, next) => {
+
+if(roles.includes(req.user.role))
+
+return  next()
+  return next(new AppError('you are not authorized to access this endpoint',401))
+
+
+  })
+
+}
+
+
+export { signUp, signIn, changeUserPassword,protectedRoutes,allowedTo };
