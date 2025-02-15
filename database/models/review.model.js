@@ -1,6 +1,6 @@
 import mongoose, { Types } from "mongoose";
-import { User } from "./user.model";
-import { Product } from "./product.model";
+import { User } from "./user.model.js";
+import { Product } from "./product.model.js";
 const schema = new mongoose.Schema({
     comment: String,
 
@@ -15,7 +15,7 @@ const schema = new mongoose.Schema({
         max: 5,
         required: true
     },
-    Product: {
+    product: {
         type: Types.ObjectId,
         ref: 'Product',
         required:true
