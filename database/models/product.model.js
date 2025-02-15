@@ -73,7 +73,21 @@ const schema = new mongoose.Schema({
   ref:"User",
   },
     
-}, { timesstamps: true, versionKey: false });
+}, { timesstamps: true, versionKey: false,toJSON: { virtuals: true }});
+
+
+
+schema.virtual('myReviews',{
+ref:'Review',
+localField:'_id',
+foreignField:'product',
+
+
+})
+
+schema.pre('findOne', function () {
+    this.populate('myReviews')
+})
 
 
 schema.post('init',function(doc){

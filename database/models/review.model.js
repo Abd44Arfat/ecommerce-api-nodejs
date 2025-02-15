@@ -26,5 +26,12 @@ const schema = new mongoose.Schema({
 
 
 }, { timesstamps: true, versionKey: false });
+
+
+schema.pre(/^find/,function(){
+
+    this.populate('user','name')
+    
+    })
 export const Review = mongoose.model('Review', schema);
 

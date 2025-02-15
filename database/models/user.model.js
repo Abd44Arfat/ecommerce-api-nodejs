@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt"
+import  { Types } from "mongoose";
+
 const schema = new mongoose.Schema({
     name: String,
     email:String,
@@ -15,6 +17,14 @@ default: 'user'
 
 },
 passwordChangedAt: Date,
+wishlist: [{ type: Types.ObjectId, ref: 'Product' }],
+addresses: [{ 
+
+city:String,
+phone:String,
+street:String,
+
+}],
 
     // slug: {
     //     type: String,
