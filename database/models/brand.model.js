@@ -26,7 +26,7 @@ const schema = new mongoose.Schema({
 
 
 schema.post('init',function(doc){
-    doc.logo="http://localhost:3000/uploads/brands/" + doc.logo
+    doc.logo=process.env.BASE_URL+"brands/" + doc.logo
     
     })
 export const Brand = mongoose.model('Brand', schema);

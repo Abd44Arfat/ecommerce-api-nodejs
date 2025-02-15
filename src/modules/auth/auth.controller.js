@@ -11,7 +11,7 @@ const signUp = catchError(async (req, res, next) => {
 
   let token = jwt.sign(
     { email: user.email, name: user.name, id: user._id, role: user.role },
-    "JR"
+    process.env.JWT_key
   );
   res.status(201).json({ message: "success", user, token });
 });
@@ -22,7 +22,7 @@ const signIn = catchError(async (req, res, next) => {
 
     let token = jwt.sign(
       { email: user.email, name: user.name, id: user._id, role: user.role },
-      "JR"
+      process.env.JWT_key
     );
     return res.status(201).json({ message: "success", user, token });
   }
@@ -38,7 +38,7 @@ const changeUserPassword = catchError(async (req, res, next) => {
     await User.findOneAndUpdate({ email: req.body.email }, { password: req.body.newPassword,passwordChangedAt:Date.now()  });
     let token = jwt.sign(
       { email: user.email, name: user.name, id: user._id, role: user.role },
-      "JR" 
+      process.env.JWT_key
     );
     return res.status(201).json({ message: "success", token });
   }
@@ -53,7 +53,7 @@ const protectedRoutes = catchError(async (req, res, next) => {
   if (!token) return next(new AppError("Token not found", 401));
 
   try {
-    userPayload = jwt.verify(token, "JR");
+    userPayload = jwt.verify(token,   process.env.JWT_key);
   } catch (err) {
     return next(new AppError(err.message, 401));
   }

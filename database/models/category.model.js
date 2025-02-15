@@ -27,7 +27,7 @@ required: true
 }, { timesstamps: true, versionKey: false });
 
 schema.post('init',function(doc){
-doc.image="http://localhost:3000/uploads/categories/" + doc.image
+doc.image=process.env.BASE_URL+"categories/" + doc.image
 
 })
 
