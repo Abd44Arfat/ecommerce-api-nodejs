@@ -10,6 +10,7 @@ import wishlistRouter from "./wishlist/wishlist.routes.js"
 import AddressRouter from "./address/address.routes.js"
 import CouponRouter from "./coupon/coupon.routes.js"
 import CartRouter from "./cart/cart.routes.js"
+import OrderRouter from "./order/order.routes.js"
 export const bootstrap=(app)=>{
 
 
@@ -25,6 +26,8 @@ app.use('/api/wishlists',wishlistRouter)
 app.use('/api/addresses',AddressRouter)
 app.use('/api/coupons',CouponRouter)
 app.use('/api/carts',CartRouter)
+app.use('/api/orders',OrderRouter)
+
 
 
 
