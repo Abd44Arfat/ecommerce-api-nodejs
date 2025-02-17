@@ -1,7 +1,7 @@
 
 import { Router } from "express";
 import { allowedTo,protectedRoutes } from "../auth/auth.controller.js";
-import {  addToCart, applyCoupon, clearUsercart, getLoggedUserCart, removeItemFromCart, updateQuantity  } from "./cart.controller.js";
+import {  addToCart, applyCoupon, clearUsercart, getLoggedUserCart,  removeProductFromCart , updateQuantity  } from "./cart.controller.js";
 
 const CartRouter=Router()
 CartRouter.route('/')
@@ -11,7 +11,7 @@ CartRouter.route('/')
 
  CartRouter.route('/:id')
 .put(protectedRoutes,allowedTo('user'),updateQuantity)
-.delete(protectedRoutes,allowedTo('user'),removeItemFromCart)
+.delete(protectedRoutes,allowedTo('user'),removeProductFromCart)
 
 CartRouter.post('/apply-coupon',protectedRoutes,allowedTo('user'),applyCoupon)
 

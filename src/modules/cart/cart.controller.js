@@ -66,15 +66,46 @@ const updateQuantity = catchError(async (req, res, next) => {
 
 
 
-const removeItemFromCart = catchError(async (req, res, next) => {
+// const removeItemFromCart = catchError(async (req, res, next) => {
 
-    let cart = await Cart.findOneAndUpdate({ user: req.user._id },
-        { $pull: { cartItems: { _id: req.params.id } } }, { new: true });
+//     let cart = await Cart.findOneAndUpdate({ user: req.user._id },
+//         { $pull: { cartItems: { _id: req.params.id } } }, { new: true });
 
-    calcTotalPrice(cart)
-    await cart.save()
-    cart || next(new AppError("cartes not found", 404));
-    !cart || res.json({ message: "success", cart });
+//     calcTotalPrice(cart)
+//     await cart.save()
+//     cart || next(new AppError("cartes not found", 404));
+//     !cart || res.json({ message: "success", cart });
+// });
+const removeProductFromCart = catchError(async (req, res, next) => {
+    // Find the cart for the logged-in user
+    let cart = await Cart.findOne({ user: req.user._id });
+    
+    // If the cart doesn't exist, return an error
+    if (!cart) {
+        return next(new AppError("Cart not found", 404));
+    }
+
+    // Check if the item exists in the cart
+    const itemIndex = cart.cartItems.findIndex(item => item._id.toString() === req.params.id);
+    if (itemIndex === -1) {
+        return next(new AppError("Item was not found", 404));
+    }
+
+    // Remove the item from the cart
+    cart.cartItems.splice(itemIndex, 1);
+
+    // Calculate total prices after item removal
+    calcTotalPrice(cart);
+
+    // Apply discount if it exists
+    if (cart.discount) {
+        cart.totalCartPriceAfterDiscount =
+            cart.totalCartPrice - (cart.totalCartPrice * cart.discount) / 100;
+    }
+
+    // Save the cart and return the updated cart
+    await cart.save();
+    res.status(200).json({ message: "success", cart });
 });
 
 
@@ -112,7 +143,8 @@ export {
 
     addToCart,
     updateQuantity,
-    removeItemFromCart,
+    removeProductFromCart,
+    // removeItemFromCart,
     getLoggedUserCart,
     clearUsercart,
     applyCoupon
