@@ -1,5 +1,5 @@
 import { connect } from "mongoose";
 
-export const dbConnection =connect("mongodb://127.0.0.1:27017/ecommerce2").then(() => {
+export const dbConnection =connect("mongodb+srv://nodejsfullecommerce:06925270*aA@cluster0.6line1m.mongodb.net/fullecommerce").then(() => {
     console.log("Database connected");
 })
