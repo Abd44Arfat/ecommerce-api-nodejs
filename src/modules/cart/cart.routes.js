@@ -1,15 +1,18 @@
 
 import { Router } from "express";
 import { allowedTo,protectedRoutes } from "../auth/auth.controller.js";
-import {  addToCart  } from "./cart.controller.js";
+import {  addToCart, applyCoupon, clearUsercart, getLoggedUserCart, removeItemFromCart, updateQuantity  } from "./cart.controller.js";
 
 const CartRouter=Router()
 CartRouter.route('/')
 .post(protectedRoutes,allowedTo('user'),addToCart)
-// .get(protectedRoutes,allowedTo('user',),getLoggedUserAddress)
-//  CartRouter.route('/:id')
-// .delete(protectedRoutes,allowedTo('user'),removeAddress)
+.get(protectedRoutes,allowedTo('user'),getLoggedUserCart)
+.delete(protectedRoutes,allowedTo('user'),clearUsercart)
 
+ CartRouter.route('/:id')
+.put(protectedRoutes,allowedTo('user'),updateQuantity)
+.delete(protectedRoutes,allowedTo('user'),removeItemFromCart)
 
+CartRouter.post('/apply-coupon',protectedRoutes,allowedTo('user'),applyCoupon)
 
 export default CartRouter

@@ -14,8 +14,6 @@ const schema = new mongoose.Schema({
         type: String,
         lowercase: true,
         required: true,
-
-
     },
     description: {
         type: String,
@@ -81,20 +79,13 @@ schema.virtual('myReviews',{
 ref:'Review',
 localField:'_id',
 foreignField:'product',
-
-
 })
-
 schema.pre('findOne', function () {
     this.populate('myReviews')
 })
-
-
 schema.post('init',function(doc){
   if(doc.imgCover)  doc.imgCover=process.env.BASE_URL+"products/" + doc.imgCover
-
    if(doc.images) doc.images =doc.images.map(img=>process.env.BASE_URL+"products/" + img)
-    
     })
 export const Product = mongoose.model('Product', schema);
 
