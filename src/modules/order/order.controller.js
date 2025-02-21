@@ -4,7 +4,7 @@ import { Product } from "../../../database/models/product.model.js";
 import { catchError } from "../../middleware/catchError.js";
 import { AppError } from "../../utils/appError.js";
 import Stripe from 'stripe';
-const stripe = new Stripe('sk_test_51O1YirJJeVqIqLw03ErjwEjMOM9ANDTMApVpgYcdt3RUoH2dys7s6u6sBdfLMqeyfrhYfUXYY12Om6Jigh48pphj00T0Sjn2AD');
+const stripe = new Stripe('');
 
 
 
